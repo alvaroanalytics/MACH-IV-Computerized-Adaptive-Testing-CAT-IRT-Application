@@ -23,7 +23,7 @@ shiny::runGitHub("MACH-IV-Computerized-Adaptive-Testing-CAT-IRT-Application", "a
 
 This repository contains three essential files required for the CAT algorithms to function.
 
-### 1. `app.R` (CORE FILE)
+### 1. `machApp.R` (CORE FILE)
 This is the main execution script. It contains:
 * **Auto-installer:** Checks and installs missing libraries (`mirt`, `shiny`, `mirtCAT`).
 * **User Interface (UI):** The CSS styling and layout of the web application.
