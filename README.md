@@ -25,9 +25,9 @@ This repository contains three essential files required for the CAT algorithms t
 
 ### 1. `machApp.R` (CORE FILE)
 This is the main execution script. It contains:
-* **Auto-installer:** Checks and installs missing libraries (`mirt`, `shiny`, `mirtCAT`).
+* **Auto-installer:** Checks and installs missing libraries (i.e `mirt`, `shiny`, `mirtCAT`).
 * **User Interface (UI):** The CSS styling and layout of the web application.
-* **Server Logic:** The adaptive algorithm that selects the next question based on current estimation.
+* **Server Logic:** The adaptive algorithm that selects the next question based on current estimation (`MI` + `MAP`).
 * **Reporting:** The function that generates the final plot and interpretation text.
 
 ### 2. `banco_items.rds`
