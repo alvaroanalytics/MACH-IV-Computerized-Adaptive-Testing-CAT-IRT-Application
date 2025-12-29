@@ -59,7 +59,7 @@ Contains the **Graded Response Model** applied to the Mach-IV file of raw puntua
 * **R Language:** Core programming language (plus, It's open-source😜).
 * **Shiny-friendly:** Web application framework.
 * **mirt & mirtCAT:** Packages for Multidimensional Item Response Theory and Computerized Adaptive Testing.
-* **CSS/HTML:** Custom styling for a professional "Executive Assessment" look.
+* **CSS/HTML**
 
 ---
 
