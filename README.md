@@ -42,14 +42,14 @@ Contains the **Graded Response Model** applied to the Mach-IV file of raw puntua
 
 1. **Adaptive Logic:** The test starts with a random item. Subsequent items are selected to maximize information based on your provisional trait level.
 2. **Randomesque Item Selection:** When multiple items provide similar information, the algorithm randomly selects among the top candidates. This reduces item overexposure and increases test security.
-3. **No Backtracking:** Due to the adaptive nature of the test, navigation is strictly forward-only. Once an answer is submitted, it cannot be changed.
+3. **No Backtracking:** Due to the adaptive nature of the test, navigation is strictly forward-only. Once an answer is submitted, it cannot be changed; therefore, participants are encouraged to click the "Next" buttom only when confident that their answer best reflects their position.
 4. **Real-Time Estimation:** The engine updates your latent trait estimate (Theta, θ) after each response using Bayesian estimation.
 5. **Precision-Based Stopping Rule:** The test continues until a predefined level of measurement precision is reached (SEM ≤ 0.30), with a minimum of 8 and a maximum of 15 items to ensure reliable estimation.
 6. **Executive Report:** Upon completion, the app generates a concise dashboard including:
-    * A standardized score (0–100), derived from a proportional transformation of the observed responses.
-    * Machiavellian orientation level (Low, Moderate, High).
-    * A normal distribution plot positioning the individual relative to the normative population.
-    * A dimensional breakdown of the underlying trait.
+* A standardized score (0–100), derived from a proportional transformation of the observed responses, following the original test scoring approach.
+* Machiavellian orientation level (Low, Moderate, High), accompanied by a brief interpretive description.
+* A normal distribution plot positioning the individual relative to the normative population (point estimate only; no confidence interval).
+* A dimensional breakdown of the underlying trait, reporting the mean score (1–5) for each dimension, based on the four dimensions defined in the original Christie & Geis form.
 
 
 ---
