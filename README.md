@@ -40,20 +40,23 @@ Contains the **Graded Response Model** applied to the Mach-IV file of raw puntua
 
 ## What to Expect
 
-1. **Adaptive Logic:** The test will start with a random item. Subsequent items are selected to maximize information based on your provisional trait level.
-2. **No Backtracking:** Due to the adaptive nature of the test, navigation is strictly forward-only.
-3. **Real-Time Estimation:** The underlying engine recalculates your Theta (θ) after every response.
-4. **Executive Report:** Upon completion, the app generates a dashboard showing:
-    * Standardized Score (0-100).
-    * Machiavellian Orientation Level (Low, Moderate, High).
-    * A Normal Distribution Plot placing the user relative to the population.
-    * Dimensional breakdown of the trait.
+1. **Adaptive Logic:** The test starts with a random item. Subsequent items are selected to maximize information based on your provisional trait level.
+2. **Randomesque Item Selection:** When multiple items provide similar information, the algorithm randomly selects among the top candidates. This reduces item overexposure and increases test security.
+3. **No Backtracking:** Due to the adaptive nature of the test, navigation is strictly forward-only. Once an answer is submitted, it cannot be changed.
+4. **Real-Time Estimation:** The engine updates your latent trait estimate (Theta, θ) after each response using Bayesian estimation.
+5. **Precision-Based Stopping Rule:** The test continues until a predefined level of measurement precision is reached (SEM ≤ 0.30), with a minimum of 8 and a maximum of 15 items to ensure reliable estimation.
+6. **Executive Report:** Upon completion, the app generates a concise dashboard including:
+    * A standardized score (0–100), derived from a proportional transformation of the observed responses.
+    * Machiavellian orientation level (Low, Moderate, High).
+    * A normal distribution plot positioning the individual relative to the normative population.
+    * A dimensional breakdown of the underlying trait.
+
 
 ---
 
 ## Technologies Used
 
-* **R Language:** Core programming language.
+* **R Language:** Core programming language (plus, It's open-source :))
 * **Shiny-friendly:** Web application framework.
 * **mirt & mirtCAT:** Packages for Multidimensional Item Response Theory and Computerized Adaptive Testing.
 * **CSS/HTML:** Custom styling for a professional "Executive Assessment" look.
