@@ -28,7 +28,7 @@ This is the main execution script. It contains:
 * **Auto-installer:** Checks and installs missing libraries (i.e `mirt`, `shiny`, `mirtCAT`).
 * **User Interface (UI):** The CSS styling and layout of the web application.
 * **Server Logic:** The adaptive algorithm that selects the next question based on current estimation (`MI` + `MAP`).
-* **Reporting:** The function that generates the final plot and interpretation text.
+* **Reporting:** The function that generates the final plot and interpretation text (for a friendly description and view😎).
 
 ### 2. `banco_items.rds`
 Contains the **Item Bank**. It holds the text of the questions (Mach-IV scale items) and metadata required for the display.
@@ -56,7 +56,7 @@ Contains the **Graded Response Model** applied to the Mach-IV file of raw puntua
 
 ## Technologies Used
 
-* **R Language:** Core programming language (plus, It's open-source :))
+* **R Language:** Core programming language (plus, It's open-source😜).
 * **Shiny-friendly:** Web application framework.
 * **mirt & mirtCAT:** Packages for Multidimensional Item Response Theory and Computerized Adaptive Testing.
 * **CSS/HTML:** Custom styling for a professional "Executive Assessment" look.
