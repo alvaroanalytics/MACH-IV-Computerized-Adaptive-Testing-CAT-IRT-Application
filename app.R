@@ -138,7 +138,11 @@ final_fun_pro <- function(person) {
         ),
         br(),
         div(class = "info-card", style = "text-align:left; max-width:100%; align-items: stretch;", h4("Dimensional Breakdown (Likert Mean 1–5)"),
-            div(lapply(list(list("Negative Tactics", calc_dimension(dim_1_items)), list("Positive Tactics", calc_dimension(dim_2_items)), list("Cynical Worldview", calc_dimension(dim_3_items)), list("Positive Worldview",calc_dimension(dim_4_items))), function(x) { if (is.null(x[[2]])) return(NULL); div(class = "dim-row", span(x[[1]], style="color:#57606f;"), span(class = "pill", sprintf("%.1f", x[[2]])))})))
+            div(lapply(list(list("Negative Tactics", calc_dimension(dim_1_items)), list("Positive Tactics", calc_dimension(dim_2_items)), list("Cynical Worldview", calc_dimension(dim_3_items)), list("Positive Worldview",calc_dimension(dim_4_items))), function(x) { if (is.null(x[[2]])) return(NULL); div(class = "dim-row", span(x[[1]], style="color:#57606f;"), span(class = "pill", sprintf("%.1f", x[[2]])))}))),
+        br(),
+        div(style="text-align:center;",
+            tags$button(class="exit-btn", onclick="window.location.href='https://www.uam.es';", "Exit Questionnaire")
+        )
     )
   )
 }
