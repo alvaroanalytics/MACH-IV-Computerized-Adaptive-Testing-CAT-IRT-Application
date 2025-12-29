@@ -64,12 +64,5 @@ Contains the **Graded Response Model** applied to the Mach-IV file of raw puntua
 ---
 
 ### Author
-**Álvaro González Sánchez**
-
-**Psychology (BSc)**
-
-**Methods, Psychometrics and Data Science in Health & Behavioral Science (MSc)**
-
-*Universidad Complutense de Madrid (UCM)*
-*Universidad Autónoma de Madrid (UAM)*
+**Álvaro González Sánchez** | *BSc **Psychology*** | *MSc **Methods, Psychometrics & Data Science** (Health & Behavioral Sciences)* | UCM & UAM
 
