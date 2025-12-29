@@ -301,9 +301,9 @@ css_global_pro <- "
 # Defining the Welcome Page with clear instructions that back-navigation is disabled.
 first_page_content <- list(
   div(class = "welcome-container",
-      div(class = "brand-logo", "EXECUTIVE ASSESSMENT SERIES"),
-      h1("MACH-IV: Adaptive Assessment"),
-      h3("Computerized Adaptive Testing (CAT) Environment"),
+      div(class = "brand-logo", "UAM PSYCHOMETRIC ASSESSMENT SERIES"),
+      h1("MACH-IV: CAT Application"),
+      h3("Computerized Adaptive Testing (CAT) Environment in RStudio"),
       div(class = "intro-box",
           p("Welcome. This instrument is designed to evaluate interpersonal Machiavellianism orientation using a probabilistic item response model (IRT)."),
           tags$ul(class = "instructions-list",
@@ -313,7 +313,20 @@ first_page_content <- list(
                   tags$li("Individuals with a minimum English proficiency level of B2 are expected to perform well.")
           )
       ),
-      p(class = "footer-note", "Please click 'Next' to proceed.")
+      p(class = "footer-note", "Please click 'Next' to proceed."),
+      p(
+        style = "margin-top:20px; font-size:0.85em; color:#7f8c8d;",
+        "Source code and documentation: ",
+        tags$a(
+          href = "https://github.com/alvaroanalytics/MACH-IV-Computerized-Adaptive-Testing-CAT-IRT-Application",
+          target = "_blank",
+          "González, A. (2026): GitHub repository"
+        )
+      ),
+      p(
+        style = "margin-top:30px; font-size:0.8em; color:#7f8c8d; text-align:center;",
+        HTML("Reference:<br/>Christie, R., &amp; Geis, F. L. (1970). <em>Studies in Machiavellianism</em>. New York: Academic Press.")
+      )
   )
 )
 
@@ -321,7 +334,8 @@ first_page_content <- list(
 # 'forced_choice' ensures the user cannot skip questions.
 gui_props <- list(
   title     = "MACH-IV CAT Assessment",
-  authors   = "Christie & Geis (1970) | Adaptive Algorithm by González (2026)",
+  authors   = "Original by Christie & Geis (1970) | CAT application by González (2026). 
+  See more at 'Source code and documentation'",
   firstpage = first_page_content,
   lastpage  = final_fun_pro,
   css       = css_global_pro
