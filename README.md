@@ -34,7 +34,7 @@ This is the main execution script. It contains:
 Contains the **Item Bank**. It holds the text of the questions (Mach-IV scale items) and metadata required for the display.
 
 ### 3. `mod_grm.rds`
-Contains the **Graded Response Model** applied to the Mach-IV file of raw puntuation/score (Likert Tipe (1-5) responses).
+Contains the **Graded Response Model** applied to the Mach-IV file of raw puntuation/score (Likert-Type (1-5) responses).
 
 ---
 
