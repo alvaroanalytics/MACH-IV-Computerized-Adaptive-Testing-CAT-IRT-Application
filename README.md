@@ -4,7 +4,7 @@ This web application implements a Computerized Adaptive Test (CAT) for the Mach-
 
 You can execute this application directly from your RStudio console without manually downloading files. The code includes an auto-installation script for required packages.
 
-### Option 1: The "Magic Command" (Recommended)
+### Option 1: Command (Recommended)
 Run the following command in your RStudio Console:
 
 ```r
