@@ -16,12 +16,13 @@ library(mirtCAT)
 library(base64enc)
 library(dplyr)
 
-# We load the item bank and the pre-calibrated IRT model. These are the brain and heart of the 
-# application.
-df_cat <- readRDS("banco_items.rds")
-df_cat$Forced <- TRUE 
+# We load the item bank and the pre-calibrated IRT model. These are the brain and heart of the application: 
 
-mod_grm <- readRDS("mod_grm.rds")
+# df_cat <- readRDS("banco_items.rds") # Here you see the Liker-type (1-5) items and their statements.
+
+# df_cat$Forced <- TRUE # This is critical for the CAT algorithm stability, as it requires a valid input at every step to update the Theta estimate iteratively.
+
+# mod_grm <- readRDS("mod_grm.rds") # This is the Graded Response Model object. It will be used all the way to find the estimated thetas in real moment while every participant is responding.
 
 # This is a critical psychometric patch. The original model expects inverted scores for reverse items,
 # but our UI sends raw inputs (1-5). Instead of messing with the UI, we mathematically flip the 
@@ -42,24 +43,47 @@ dim_2_items <- c(3, 6, 7, 9, 10, 16)
 dim_3_items <- c(5, 8, 13, 17, 18, 20) 
 dim_4_items <- c(4, 11, 14, 19)      
 
-# This function generates the final report. It grabs the scientific Theta estimate and translates 
-# it into a user-friendly visual experience.
+# This function generates the final report. It grabs the scientific Theta estimate and translates it into a user-friendly visual experience.
 final_fun_pro <- function(person) {
   
-  # We extract the actual Theta calculated by the MAP algorithm. This is the true latent trait 
-  # score, far more accurate than a simple sum of points.
+  # --- 1. EXTRACTION OF PSYCHOMETRIC DATA ---
+  # We extract the final Theta (trait level)
   theta_est <- as.numeric(person$thetas[1])
   
-  # Since users don't intuitively understand logits (-3 to +3), we transform the Theta into a 
-  # standardized T-score (0-100) just for the visual ring. It makes the result digestible.
-  visual_score <- round((theta_est * 15) + 50, 0)
+  # NEW: We extract the final Standard Error (SEM) from the history
+  # mirtCAT stores the SE evolution; we take the last value (the one at the moment of stopping).
+  final_sem <- as.numeric(tail(person$thetas_SE_history, 1))
   
-  # Just a quick safety clamp to keep the visual score within the logical 0-100 bounds.
+  # NEW: We calculate the approximate Reliability (r = 1 - SEM^2)
+  # This gives us a 0-1 index of how trustworthy this specific result is.
+  reliability_est <- max(0, 1 - (final_sem^2))
+  
+  # --- 2. DATA LOGGING (SAVING RESULTS) ---
+  # This block saves the psychometric properties of this session to a CSV file.
+  # "append = TRUE" ensures we add a new row for each participant without deleting previous ones.
+  
+  log_data <- data.frame(
+    Date = as.character(Sys.time()),
+    Theta = round(theta_est, 3),
+    SEM = round(final_sem, 3),
+    Reliability = round(reliability_est, 3),
+    Items_Answered = length(person$responses) # Tracks if they stopped early
+  )
+  
+  # Check if file exists to write headers only once
+  if (!file.exists("registro_participantes.csv")) {
+    write.table(log_data, "registro_participantes.csv", sep = ",", row.names = FALSE, col.names = TRUE)
+  } else {
+    write.table(log_data, "registro_participantes.csv", sep = ",", row.names = FALSE, col.names = FALSE, append = TRUE)
+  }
+  
+  # --- 3. VISUAL SCORING LOGIC (EXISTING) ---
+  # Transformation to T-Score (0-100)
+  visual_score <- round((theta_est * 15) + 50, 0)
   if (visual_score > 99) visual_score <- 99
   if (visual_score < 1) visual_score <- 1
   
-  # We define the text feedback based on statistical cutoffs (approx. +/- 0.8 SD) rather than 
-  # arbitrary raw scores, ensuring the classification is statistically valid.
+  # Text feedback logic
   if (theta_est >= 0.8) {
     accent_color <- "#e74c3c"; level_label <- "High Machiavellian Orientation"
     level_desc <- "Profile characterized by a distinct pragmatic detachment, strategic calculation in interpersonal management, and an instrumental view of social structures."
@@ -71,8 +95,7 @@ final_fun_pro <- function(person) {
     level_desc <- "Balanced profile reflecting a situational adaptability between strategic self-interest and collaborative trust, contingent upon environmental cues."
   }
   
-  # While the CAT engine handles the math via parameter flipping, we still need to manually 
-  # invert the raw responses here solely to display the correct means (1-5) for the sub-dimensions.
+  # --- 4. SUB-DIMENSION CALCULATION (EXISTING) ---
   responses <- person$responses
   reverse_items <- c(3, 4, 6, 7, 9, 10, 11, 14, 16, 17)
   processed_values <- numeric()
@@ -95,8 +118,7 @@ final_fun_pro <- function(person) {
     mean(vals)
   }
   
-  # We generate the normal distribution plot on the fly, placing the user's dot exactly where 
-  # their Theta lies relative to the population.
+  # --- 5. PLOT GENERATION (EXISTING) ---
   tf <- tempfile(fileext = ".png")
   png(tf, width = 800, height = 400, res = 140)
   par(mar = c(2, 0, 1, 0), bg = NA) 
@@ -112,8 +134,8 @@ final_fun_pro <- function(person) {
   dev.off()
   plot_base64 <- base64enc::dataURI(file = tf, mime = "image/png")
   
-  # This block handles the HTML structure and injects the dynamic variables (score, text, plot) 
-  # into the final view presented to the user.
+  # --- 6. HTML REPORT GENERATION ---
+  # Included CSS for the report layout
   css_report <- paste0("
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap');
     .main-container { font-family: 'Inter', sans-serif; background-color: #f8f9fa; padding: 40px; max-width: 900px; margin: 0 auto; border-radius: 16px; color: #2c3e50; }
@@ -129,6 +151,8 @@ final_fun_pro <- function(person) {
     .dim-row { display: flex; justify-content: space-between; padding: 14px 0; border-bottom: 1px solid #f1f2f6; font-size: 0.95em; }
     .dim-row:last-child { border-bottom: none; }
     .pill { background: #f1f2f6; padding: 4px 12px; border-radius: 20px; font-weight: 600; font-size: 0.85em; color: #2c3e50; }
+    /* NEW CSS FOR TECHNICAL FOOTER */
+    .tech-footer { margin-top: 30px; background-color: #e9ecef; padding: 15px; border-radius: 8px; font-size: 0.85em; color: #636e72; display: flex; justify-content: space-between; align-items: center; }
   ")
   
   div(
@@ -142,6 +166,15 @@ final_fun_pro <- function(person) {
         br(),
         div(class = "info-card", style = "text-align:left; max-width:100%; align-items: stretch;", h4("Dimensional Breakdown (Likert Mean 1–5)"),
             div(lapply(list(list("Negative Tactics", calc_dimension(dim_1_items)), list("Positive Tactics", calc_dimension(dim_2_items)), list("Cynical Worldview", calc_dimension(dim_3_items)), list("Positive Worldview",calc_dimension(dim_4_items))), function(x) { if (is.null(x[[2]])) return(NULL); div(class = "dim-row", span(x[[1]], style="color:#57606f;"), span(class = "pill", sprintf("%.1f", x[[2]])))}))),
+        
+        # --- NEW TECHNICAL DATASHEET SECTION ---
+        div(class = "tech-footer",
+            div(strong("Psychometric Precision:")),
+            div(paste0("SEM: ", round(final_sem, 2), " | Reliability: ", round(reliability_est, 2))),
+            div(style = "font-size: 0.9em; font-style: italic;", 
+                if(reliability_est > 0.90) "Excellent Accuracy" else if(reliability_est > 0.80) "Good Accuracy" else "Moderate Accuracy")
+        ),
+        
         br(),
         div(style="text-align:center;",
             tags$button(class="exit-btn", onclick="window.location.href='https://www.uam.es';", "Exit Questionnaire")
@@ -205,7 +238,7 @@ first_page_content <- list(
 
 gui_props <- list(
   title     = "MACH-IV CAT Assessment",
-  authors   = "Original by Christie & Geis (1970) | CAT application by González (2026).",
+  authors   = "Original by Christie & Geis (1970) | CAT application by Álvaro González Sánchez (UAM, 2026).",
   firstpage = first_page_content,
   lastpage  = final_fun_pro,
   css       = css_global_pro
