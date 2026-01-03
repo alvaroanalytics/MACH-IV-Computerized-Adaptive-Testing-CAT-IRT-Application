@@ -14,7 +14,7 @@ shiny::runGitHub("MACH-IV-Computerized-Adaptive-Testing-CAT-IRT-Application", "a
 ### Option 2: Manual Execution
 1. **Download** this repository as a ZIP file.
 2. **Unzip** the folder.
-3. Open the file `app.R` in RStudio.
+3. Open the file `machApp.R` in RStudio.
 4. Click the **"Run App"** button (green play icon) located at the top right of the script editor.
 
 ---
